@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cumhurbaşkanlığına En Yakın Kim?</title>
+
+  <style>
+    body{font-family:'Inter',system-ui,sans-serif;background:#f9f6f2;margin:0;padding:20px;color:#2b2118}
+    h1{margin:10px 0 6px;text-align:center;font-weight:700;color:#3b2a1a}
+    p.desc{max-width:680px;margin:8px auto 24px;text-align:center;color:#6d5c4a;font-size:15px}
+
+    #adaylar.board{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));max-width:980px;margin:0 auto}
+
+    .card{position:relative;background:#fff;border-radius:14px;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,.08);
+          transition:transform .2s, box-shadow .2s; cursor:grab; user-select:none; text-align:center}
+    .card:hover{transform:translateY(-5px);box-shadow:0 6px 16px rgba(0,0,0,.12)}
+    .card:active{cursor:grabbing}
+    .thumb{width:100%;height:160px;object-fit:cover;border-radius:10px;margin:10px 0}
+    .name{font-weight:700;color:#3c2e23}
+
+    .badge{position:absolute;left:12px;top:10px;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+           background:#5b4636;color:#fff;font-weight:700;font-size:13px;box-shadow:0 2px 6px rgba(0,0,0,.15)}
+    .handle{position:absolute;right:12px;top:10px;font-size:18px;color:#b6a28a;opacity:.7;cursor:default}
+    .handle:hover{opacity:1}
+
+    .sortable-chosen{opacity:.9;transform:scale(1.02)}
+    .sortable-ghost{opacity:.35;background:#f1e7dd;border:2px dashed #d3bfa7}
+
+    .btn{display:block;width:fit-content;margin:26px auto 0;padding:12px 22px;border-radius:8px;background:#5b4636;color:#fff;text-decoration:none;font-weight:600}
+    .btn:hover{background:#3b2a1a}
+    .btn.alt{background:#a68967}
+  </style>
+
+  <!-- Sortable.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+</head>
+<body>
+  <h1>Cumhurbaşkanlığına En Yakın Kim?</h1>
+  <p class="desc">
+    Aday kartlarını sürükleyip sıralayın. Okuma yönü soldan sağa, yukarıdan aşağıdır.
+    <strong>1 → 5</strong> sırası kaydedilecektir.
+  </p>
+
+  <div id="adaylar" class="board">
+    {% for c in candidates %}
+    <article class="card" data-name="{{ c.name }}">
+      <span class="badge">{{ loop.index }}</span>
+      <span class="handle">⋮⋮</span>
+     <img class="thumb" src="{{ c.img }}?v={{ loop.index }}" alt="{{ c.name }}">
+
+      <div class="name">{{ c.name }}</div>
+    </article>
+    {% endfor %}
+  </div>
+
+  <a id="saveBtn" href="#" class="btn">Kaydet</a>
+  <a href="/results" class="btn alt">Sonuçlara Git</a>
+
+  <script>
+    const container = document.getElementById('adaylar');
+    new Sortable(container, {
+      animation: 200,
+      ghostClass: 'sortable-ghost',
+      chosenClass: 'sortable-chosen',
+      dragClass: 'dragging',
+      filter: 'a, button',
+      preventOnFilter: true,
+      onSort: () => {
+        document.querySelectorAll('.card .badge').forEach((b,i)=> b.textContent = i+1);
+      }
+    });
+
+    document.getElementById('saveBtn').addEventListener('click', async (e) => {
+      e.preventDefault();
+      const order = Array.from(document.querySelectorAll('.card')).map(el => el.dataset.name);
+      try {
+        const res = await fetch('/vote', {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({ order })
+        });
+        const body = await res.json().catch(()=> ({}));
+        if (res.ok && (body.ok === true || body.status === 'ok')) {
+          alert('✅ Oyunuz kaydedildi!');
+        } else {
+          alert('⚠️ Hata: ' + (body.msg || res.status + ' ' + res.statusText));
+        }
+      } catch (err) {
+        alert('⚠️ Ağ hatası: ' + err.message);
+      }
+    });
+  </script>
+</body>
+</html>
