@@ -1,13 +1,32 @@
-let order = [];  // seçilen sıralama
-const maxCount = 6; // aday sayısı
+// ==========================
+//   TIKLAMALI SIRALAMA
+// ==========================
 
+let order = [];
+let maxCount = 6;
+
+// Sayfa açılınca kartlara tıklama ekle
+document.addEventListener("DOMContentLoaded", () => {
+  const cards = document.querySelectorAll(".card");
+
+  maxCount = cards.length; // otomatik aday sayısı
+
+  cards.forEach(card => {
+    const name = card.dataset.name;
+    if (!name) return;
+
+    card.addEventListener("click", () => selectCandidate(name));
+  });
+
+  updateUI();
+});
+
+// Kart seçme – eski kodun birebir aynısı
 function selectCandidate(name) {
 
-  // Eğer zaten seçiliyse → kaldır
   if (order.includes(name)) {
     order = order.filter(n => n !== name);
   }
-  // Değilse sıraya ekle (max sınır)
   else if (order.length < maxCount) {
     order.push(name);
   }
@@ -15,33 +34,33 @@ function selectCandidate(name) {
   updateUI();
 }
 
+// UI güncelleme – eski kod aynen duruyor
 function updateUI() {
 
-  // Tüm badge’leri sıfırla
   document.querySelectorAll('.rank-badge').forEach(badge => {
     badge.textContent = "–";
     badge.style.background = "#5a422e";
   });
 
-  // Seçilenlere numara koy
   order.forEach((name, index) => {
     const badge = document.getElementById("badge-" + name);
     badge.textContent = (index + 1);
     badge.style.background = "#7c5a3d";
   });
 
-  // Listeyi güncelle
   const list = document.getElementById("orderList");
-  list.innerHTML = "";
-  order.forEach(n => {
-    const li = document.createElement("li");
-    li.textContent = n;
-    list.appendChild(li);
-  });
+  if (list) {
+    list.innerHTML = "";
+    order.forEach(n => {
+      const li = document.createElement("li");
+      li.textContent = n;
+      list.appendChild(li);
+    });
+  }
 }
 
-// Kaydet
-document.getElementById("saveBtn").onclick = () => {
+// Kaydet – eski kodun aynısı
+document.getElementById("saveBtn")?.addEventListener("click", () => {
 
   if (order.length !== maxCount) {
     alert("Lütfen tüm adayları sıralayın.");
@@ -61,4 +80,4 @@ document.getElementById("saveBtn").onclick = () => {
       alert(res.msg);
     }
   });
-};
+});
