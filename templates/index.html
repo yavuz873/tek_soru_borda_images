@@ -2,33 +2,34 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cumhurbaşkanlığına En Yakın Kim?</title>
-  <link rel="stylesheet" href="/static/css/style.css">
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v={{ uuid() }}">
+  <script src="{{ url_for('static', filename='js/index.js') }}?v={{ uuid() }}" defer></script>
 </head>
+
 <body>
 
 <h1>Cumhurbaşkanlığına En Yakın Kim?</h1>
 <p class="desc">Aday kartlarına sırayla tıklayın. Sıralama otomatik olarak 1 → 6 şeklinde kaydedilir.</p>
 
-<div id="adaylar" class="board">
-
+<div class="board">
   {% for c in candidates %}
-  <article class="card" onclick="selectCandidate('{{ c.name }}')" id="card-{{ c.name }}">
-    <div class="rank-badge" id="badge-{{ c.name }}">–</div>
-    <img class="thumb" src="{{ c.img }}" alt="{{ c.name }}">
-    <div class="name">{{ c.name }}</div>
-  </article>
+ <article class="card" data-name="{{ c.name }}">
+  <div class="rank-badge" id="badge-{{ c.name }}">–</div>
+  <img class="thumb" src="{{ c.img }}" alt="{{ c.name }}">
+  <div class="name">{{ c.name }}</div>
+</article>
   {% endfor %}
-
 </div>
 
-<div class="selected-box">
+<div id="selectionBox">
   <h2>Seçtiğiniz Sıralama</h2>
   <ol id="orderList"></ol>
 </div>
 
 <button id="saveBtn" class="btn">Kaydet</button>
-<script src="{{ url_for('static', filename='js/index.js') }}?v=3"></script>
 
 </body>
 </html>

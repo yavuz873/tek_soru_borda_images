@@ -1,39 +1,39 @@
-from flask import Flask, render_template, request, redirect, url_for, jsonify, make_response, send_file
+from flask import Flask, render_template, request, jsonify, redirect, url_for, make_response, send_file
+import json, os, io, csv
 from collections import defaultdict, Counter
-import json, os, csv, io
+import uuid as _uuid
 
-
+# ===== APP =====
 app = Flask(__name__)
 
+# ===== UUID CACHE KIRICI =====
+def uuid():
+    return _uuid.uuid4()
+app.jinja_env.globals['uuid'] = uuid
+
+
 # ===== AYARLAR =====
-# Adayları görsel ile tanımlıyoruz
-
 CANDIDATES = [
-    {"name": "Recep Tayyip Erdoğan", "img": "/static/img/receptayyiperdogan.jpg?v=2"},
-    {"name": "Devlet Bahçeli", "img": "/static/img/devletbahceli.jpg?v=2"},
-    {"name": "Selahattin Demirtaş", "img": "/static/img/selahattindemirtas.jpg?v=2"},
-    {"name": "Özgür Özel", "img": "/static/img/ozgurozel.jpg?v=2"},
-    {"name": "Ümit Özdağ", "img": "/static/img/umitozdag.jpg?v=2"},
-    {"name": "Musavat Dervişoğlu", "img": "/static/img/musavatdervisoglu.jpg?v=2"}
+    {"name": "Recep Tayyip Erdoğan",   "img": "/static/img/receptayyiperdogan.jpg?v=2"},
+    {"name": "Devlet Bahçeli",         "img": "/static/img/devletbahceli.jpg?v=2"},
+    {"name": "Selahattin Demirtaş",    "img": "/static/img/selahattindemirtas.jpg?v=2"},
+    {"name": "Özgür Özel",             "img": "/static/img/ozgurozel.jpg?v=2"},
+    {"name": "Ümit Özdağ",             "img": "/static/img/umitozdag.jpg?v=2"},
+    {"name": "Musavat Dervişoğlu",     "img": "/static/img/musavatdervisoglu.jpg?v=2"}
 ]
-def _check_static_images():
-    base = os.path.join(os.path.dirname(__file__), "static")
-    for c in CANDIDATES:
-        path = c["img"].split("?")[0]
-        fs = os.path.join(base, path.replace("/static/", ""))
-        print(("OK   " if os.path.exists(fs) else "MISS "), fs)
 
-WEIGHTS = [5,4,3,2,1]                 # 1.→5. sıraya puan
-DATA_FILE = "data.json"               # oylar burada tutulur
-ADMIN_RESET_TOKEN = "DEGIS_TIR"       # /reset?token=DEGIS_TIR
-COOKIE_NAME = "tek_soru_borda_voted"  # bir tarayıcıdan 1 oy
-# ====================
+WEIGHTS = [5, 4, 3, 2, 1]
+DATA_FILE = "data.json"
+ADMIN_RESET_TOKEN = "DEGIS_TIR"
+COOKIE_NAME = "tek_soru_borda_voted"
 
 NAMES = [c["name"] for c in CANDIDATES]
 
+
+# ===== DATA =====
 def load_data():
     if not os.path.exists(DATA_FILE):
-        return {"votes": []}  # her oy: ["Ayşe","Ali","Deniz","Ece","Can"]
+        return {"votes": []}
     with open(DATA_FILE, "r", encoding="utf-8") as f:
         return json.load(f)
 
@@ -41,15 +41,18 @@ def save_data(data):
     with open(DATA_FILE, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
 
+
+# ===== BORDA HESAPLAMA =====
 def compute_scores(votes):
     scores = defaultdict(int)
-    podium_counts = {i: Counter() for i in range(5)}  # 1.lik,2.lik,... sayaçları
+    podium_counts = {i: Counter() for i in range(5)}
+
     for order in votes:
         for pos, name in enumerate(order):
             if pos < len(WEIGHTS):
                 scores[name] += WEIGHTS[pos]
                 podium_counts[pos][name] += 1
-    # sıralama: toplam puan ↓, 1.lik ↓, 2.lik ↓, ... , isim ↑
+
     def sort_key(item):
         name, pts = item
         key = [-pts]
@@ -57,22 +60,31 @@ def compute_scores(votes):
             key.append(-podium_counts[i][name])
         key.append(name)
         return tuple(key)
+
     ranking = sorted(scores.items(), key=sort_key)
     return scores, ranking, podium_counts
 
+
+# ===== CACHE KIRICI =====
+@app.after_request
+def add_header(response):
+    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate, max-age=0"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
+    return response
+
+
+# ===== ROUTES =====
 @app.route("/")
 def index():
     return render_template("index.html", candidates=CANDIDATES)
 
 @app.route("/vote", methods=["POST"])
 def vote():
-    # 🧩 Tek oy limiti geçici olarak devre dışı bırakıldı
-    # if request.cookies.get(COOKIE_NAME) == "1":
-    #     return jsonify({"ok": False, "msg": "Bu tarayıcıyla zaten oy vermişsiniz."}), 429
-
     payload = request.get_json(force=True, silent=True) or {}
     order = payload.get("order", [])
     ok = (len(order) == len(NAMES) and set(order) == set(NAMES))
+
     if not ok:
         return jsonify({"ok": False, "msg": "Geçersiz sıralama."}), 400
 
@@ -81,7 +93,6 @@ def vote():
     save_data(data)
 
     resp = make_response(jsonify({"ok": True}))
-    # resp.set_cookie(COOKIE_NAME, "1", max_age=60*60*24*90, samesite="Lax")  # ← bu da geçici olarak kapalı
     return resp
 
 @app.route("/results")
@@ -100,11 +111,9 @@ def results():
         winner=winner,
         total_votes=total_votes,
         imgs=imgs,
-        podium_counts=podium,   # 🔹 tablo için GEREKLİ
-    sum_weights = sum(WEIGHTS)
+        podium_counts=podium,
+        sum_weights=sum(WEIGHTS)
     )
-
-
 
 @app.route("/export.csv")
 def export_csv():
@@ -127,20 +136,18 @@ def reset():
     resp = make_response(redirect(url_for("results")))
     resp.delete_cookie(COOKIE_NAME)
     return resp
+
+
+# ===== GÖRSELLERİ KONTROL =====
 def _check_static_images():
-    import os
     base = os.path.join(os.path.dirname(__file__), "static")
     for c in CANDIDATES:
-        path = c["img"].split("?")[0]  # /static/img/xxx.jpg
+        path = c["img"].split("?")[0]
         fs = os.path.join(base, path.replace("/static/", ""))
         print(("OK   " if os.path.exists(fs) else "MISS "), fs)
 _check_static_images()
 
+
+# ===== RUN =====
 if __name__ == "__main__":
     app.run(debug=True)
-
-
-
-
-
-

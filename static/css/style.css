@@ -51,7 +51,7 @@ h1 {
   display: grid;
   gap: 20px;
   justify-content: center;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   padding: 10px;
 }
 
@@ -94,29 +94,7 @@ h1 {
   transform: scale(.97);
 }
 
-/* ===========================
-   MOBİL OPTİMİZASYON
-=========================== */
 
-@media (max-width: 768px) {
-
-  .board {
-    grid-template-columns: repeat(2, 1fr); /* 2 sütun */
-    gap: 14px;
-  }
-
-  .card {
-    padding: 10px;
-  }
-
-  .thumb {
-    height: 150px;
-  }
-
-  .name {
-    font-size: 14px;
-  }
-}
 
 /* ==========================
    RANK BADGE (tıklayınca numara çıkacak)
@@ -194,3 +172,75 @@ h1 {
 .btn:hover {
   background: var(--brand-dark);
 }
+@media (max-width: 768px) {
+.card * {
+    pointer-events: none;
+  }
+}
+  /* Genel boşluk ve hizalama */
+  body {
+    padding: 0;
+    margin: 0;
+  }
+
+  h1 {
+    font-size: 20px !important;
+    margin-top: 14px;
+    text-align: center;
+  }
+
+  .desc {
+    font-size: 13px !important;
+    margin-bottom: 12px;
+    padding: 0 18px;
+    text-align: center;
+  }
+
+  /* Kartlar 2 sütun */
+  .board {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+    padding: 0 10px !important;
+    justify-items: center !important;
+  }
+
+  /* √ Kart boyutu */
+  .card {
+    width: 100% !important;
+    max-width: 180px !important;
+    padding: 10px !important;
+    border-radius: 14px !important;
+  }
+
+
+  .thumb {
+    height: 145px !important;
+    border-radius: 12px !important;
+    object-fit: cover;
+  }
+
+  .name {
+    font-size: 14px !important;
+    font-weight: 700;
+    text-align: center;
+    margin-top: 6px;
+  }
+
+  /* Sıralama kutusu */
+  #selectionBox {
+    margin-top: 16px !important;
+    padding: 12px !important;
+  }
+
+  /* Kaydet Butonu → sabit ve büyük */
+  #saveBtn {
+    width: 85% !important;
+    font-size: 17px !important;
+    padding: 14px !important;
+    display: block;
+    margin: 18px auto !important;
+    border-radius: 12px !important;
+  }
+}
+

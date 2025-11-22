@@ -1,40 +1,40 @@
 // ==========================
-//   TIKLAMALI SIRALAMA
+//   TIKLAMALI SIRALAMA (FINAL)
 // ==========================
 
 let order = [];
-let maxCount = 6;
+let maxCount = 0;
 
-// Sayfa açılınca kartlara tıklama ekle
 document.addEventListener("DOMContentLoaded", () => {
   const cards = document.querySelectorAll(".card");
-
-  maxCount = cards.length; // otomatik aday sayısı
+  maxCount = cards.length;
 
   cards.forEach(card => {
-    const name = card.dataset.name;
+    const name = card.dataset.name?.trim();
     if (!name) return;
 
-    card.addEventListener("click", () => selectCandidate(name));
+    card.addEventListener("click", () => selectCandidate(name, card));
   });
 
   updateUI();
 });
 
-// Kart seçme – eski kodun birebir aynısı
-function selectCandidate(name) {
+// ✔ Kart Seçme - Görsel efekt + liste
+function selectCandidate(name, card) {
 
   if (order.includes(name)) {
     order = order.filter(n => n !== name);
+    card.classList.remove("selected");
   }
   else if (order.length < maxCount) {
     order.push(name);
+    card.classList.add("selected");
   }
 
   updateUI();
 }
 
-// UI güncelleme – eski kod aynen duruyor
+// ✔ Görsel güncelleme
 function updateUI() {
 
   document.querySelectorAll('.rank-badge').forEach(badge => {
@@ -59,7 +59,7 @@ function updateUI() {
   }
 }
 
-// Kaydet – eski kodun aynısı
+// ✔ Kaydet
 document.getElementById("saveBtn")?.addEventListener("click", () => {
 
   if (order.length !== maxCount) {
@@ -72,12 +72,6 @@ document.getElementById("saveBtn")?.addEventListener("click", () => {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ order })
   })
-  .then(r => r.json())
-  .then(res => {
-    if (res.ok) {
-      window.location.href = "/results";
-    } else {
-      alert(res.msg);
-    }
-  });
+    .then(r => r.json())
+    .then(res => res.ok ? window.location.href = "/results" : alert(res.msg));
 });
