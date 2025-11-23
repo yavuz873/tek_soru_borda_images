@@ -75,3 +75,14 @@ document.getElementById("saveBtn")?.addEventListener("click", () => {
     .then(r => r.json())
     .then(res => res.ok ? window.location.href = "/results" : alert(res.msg));
 });
+function removeCandidate(name, event) {
+  event.stopPropagation(); // kart tıklamasını engelle
+  order = order.filter(n => n !== name);
+  updateUI();
+}
+// ↩️ Tek tuşla tümünü sıfırla
+document.getElementById("resetBtn")?.addEventListener("click", () => {
+  order = [];  // sıralamayı boşalt
+  document.querySelectorAll(".card").forEach(c => c.classList.remove("selected"));
+  updateUI();
+});

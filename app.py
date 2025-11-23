@@ -72,7 +72,6 @@ def add_header(response):
     response.headers["Expires"] = "0"
     return response
 
-
 # ===== ROUTES =====
 @app.route("/")
 def index():

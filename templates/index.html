@@ -17,13 +17,14 @@
 <div class="board">
   {% for c in candidates %}
  <article class="card" data-name="{{ c.name }}">
+     <div class="remove-btn" onclick="removeCandidate('{{ c.name }}', event)">✖</div>
   <div class="rank-badge" id="badge-{{ c.name }}">–</div>
   <img class="thumb" src="{{ c.img }}" alt="{{ c.name }}">
   <div class="name">{{ c.name }}</div>
 </article>
   {% endfor %}
 </div>
-
+<button id="resetBtn" class="btn-reset">Tümünü Sıfırla</button>
 <div id="selectionBox">
   <h2>Seçtiğiniz Sıralama</h2>
   <ol id="orderList"></ol>
