@@ -22,13 +22,12 @@ CANDIDATES = [
     {"name": "Musavat Dervişoğlu",     "img": "/static/img/musavatdervisoglu.jpg?v=2"}
 ]
 
-WEIGHTS = [5, 4, 3, 2, 1]
+WEIGHTS = [6,5, 4, 3, 2, 1]
 DATA_FILE = "data.json"
 ADMIN_RESET_TOKEN = "DEGIS_TIR"
 COOKIE_NAME = "tek_soru_borda_voted"
 
 NAMES = [c["name"] for c in CANDIDATES]
-
 
 # ===== DATA =====
 def load_data():
@@ -43,9 +42,10 @@ def save_data(data):
 
 
 # ===== BORDA HESAPLAMA =====
+# ===== BORDA HESAPLAMA =====
 def compute_scores(votes):
     scores = defaultdict(int)
-    podium_counts = {i: Counter() for i in range(5)}
+    podium_counts = {i: Counter() for i in range(len(NAMES))}
 
     for order in votes:
         for pos, name in enumerate(order):
@@ -56,14 +56,13 @@ def compute_scores(votes):
     def sort_key(item):
         name, pts = item
         key = [-pts]
-        for i in range(5):
+        for i in range(len(NAMES)):
             key.append(-podium_counts[i][name])
         key.append(name)
         return tuple(key)
 
     ranking = sorted(scores.items(), key=sort_key)
     return scores, ranking, podium_counts
-
 
 # ===== CACHE KIRICI =====
 @app.after_request
@@ -120,7 +119,7 @@ def export_csv():
     data = load_data()
     output = io.StringIO()
     w = csv.writer(output)
-    w.writerow(["rank1","rank2","rank3","rank4","rank5"])
+    w.writerow(["rank1","rank2","rank3","rank4","rank5","rank6"])
     for order in data["votes"]:
         w.writerow(order)
     mem = io.BytesIO(output.getvalue().encode("utf-8"))

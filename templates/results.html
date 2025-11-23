@@ -25,7 +25,7 @@
 </head>
 <body>
   <h1>Sonuçlar</h1>
- <p class="muted">Toplam Oy Kullanan Kişi: <strong>{{ total_votes }}</strong></p>
+  <p class="muted">Toplam oy: {{ total_votes }}</p>
   <div class="card">
     <h3>Özet</h3>
     {% if ranking %}
@@ -54,13 +54,22 @@
         <th>3.lük</th>
         <th>4.lük</th>
         <th>5.lik</th>
+        <th>6.lık</th>
       </tr>
     </thead>
     <tbody>
       {% set max_total = total_votes * sum_weights %}
       {% for name, pts in ranking %}
       {% set rank = loop.index %}
-      {% set total_choice = podium_counts[0][name] + podium_counts[1][name] + podium_counts[2][name] + podium_counts[3][name] + podium_counts[4][name] %}
+       {% set total_choice = (
+    podium_counts[0][name] +
+    podium_counts[1][name] +
+    podium_counts[2][name] +
+    podium_counts[3][name] +
+    podium_counts[4][name] +
+    podium_counts[5][name]
+) %}
+
       {% set pct = (pts / max_total * 100) if max_total>0 else 0 %}
       <tr class="{{ 'lead' if rank==1 }}">
         <td>
@@ -89,6 +98,7 @@
         <td>{{ podium_counts[2][name] }}</td>
         <td>{{ podium_counts[3][name] }}</td>
         <td>{{ podium_counts[4][name] }}</td>
+        <td>{{ podium_counts[5][name] }}</td>
       </tr>
       {% endfor %}
     </tbody>
