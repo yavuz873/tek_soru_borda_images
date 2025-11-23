@@ -45,12 +45,13 @@ def save_data(data):
 # ===== BORDA HESAPLAMA =====
 def compute_scores(votes):
     scores = defaultdict(int)
-    podium_counts = {i: Counter() for i in range(len(NAMES))}
+    podium_counts = {i: Counter() for i in range(5)}
 
     for order in votes:
         for pos, name in enumerate(order):
-            scores[name] += WEIGHTS[pos] if pos < len(WEIGHTS) else 0
-            podium_counts[pos][name] += 1
+            if pos < len(WEIGHTS):
+                scores[name] += WEIGHTS[pos]
+                podium_counts[pos][name] += 1
 
     def sort_key(item):
         name, pts = item
