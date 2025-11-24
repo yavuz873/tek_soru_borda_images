@@ -30,16 +30,32 @@ body {
 =========================== */
 
 h1 {
-  margin-bottom: 10px;
-  font-size: 28px;
+  font-size: 30px;
+  font-weight: 800;
+  margin-bottom: 4px;
+  color: var(--brand-dark);
 }
 
 .desc {
-  max-width: 400px;
-  margin: 0 auto 30px;
-  color: var(--muted);
+  font-size: 17px;
+  opacity: .85;
+  margin-bottom: 22px;
+  color: var(--text);
 }
 
+/* === Mobil için Optimize === */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 22px;
+    margin-top: 10px;
+  }
+
+  .desc {
+    font-size: 14px;
+    padding: 0 20px;
+    margin-bottom: 16px;
+  }
+}
 /* ==========================
    ADAY KARTLARI
 =========================== */
