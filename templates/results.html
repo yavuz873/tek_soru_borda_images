@@ -46,7 +46,6 @@
         <th>Sıra</th>
         <th style="text-align:left">Aday</th>
         <th>Puan</th>
-        <th style="min-width:180px">Puan Barı</th>
         <th>Yüzde</th>
         <th>Toplam Oy</th>
         <th>1.lik</th>
@@ -88,9 +87,6 @@
           </div>
         </td>
         <td style="font-weight:700">{{ pts }}</td>
-        <td>
-          <div class="bar"><div class="bar-fill" style="width: {{ '%.1f' % pct }}%"></div></div>
-        </td>
         <td>{{ '%.1f' % pct }}%</td>
         <td>{{ total_choice }}</td>
         <td>{{ podium_counts[0][name] }}</td>
