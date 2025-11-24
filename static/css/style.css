@@ -29,33 +29,34 @@ body {
    BAŞLIK VE AÇIKLAMA
 =========================== */
 
-h1 {
-  font-size: 30px;
-  font-weight: 800;
-  margin-bottom: 4px;
-  color: var(--brand-dark);
+/* === Başlık ve Alt Açıklama === */
+.page-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #3A2320; /* Premium kahve ton */
+  margin-bottom: 12px;
 }
 
-.desc {
-  font-size: 17px;
-  opacity: .85;
-  margin-bottom: 22px;
-  color: var(--text);
+.page-subtitle {
+  margin-top: -6px;
+  font-size: clamp(14px, 1.7vw, 17px);
+  font-weight: 400;
+  color: #7A6A63; /* Daha soft kahve */
+  margin-bottom: 28px; /* Kartlardan ayrılma mesafesi */
 }
 
-/* === Mobil için Optimize === */
-@media (max-width: 768px) {
-  h1 {
-    font-size: 22px;
-    margin-top: 10px;
+/* === Mobil Uyumu === */
+@media (max-width: 600px) {
+  .page-title {
+    font-size: 26px;
   }
-
-  .desc {
-    font-size: 14px;
-    padding: 0 20px;
-    margin-bottom: 16px;
+  .page-subtitle {
+    font-size: 15px;
+    margin-bottom: 20px;
+      color: #5E4C45; /* Mobil: hafif daha koyu */
   }
 }
+
 /* ==========================
    ADAY KARTLARI
 =========================== */

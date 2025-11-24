@@ -6,6 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="0389dae0-eba0-4956-9bb3-462e36acd907" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -120,7 +122,7 @@
       <workItem from="1763645368966" duration="6082000" />
       <workItem from="1763836956235" duration="17621000" />
       <workItem from="1763918214451" duration="6181000" />
-      <workItem from="1763968493234" duration="6090000" />
+      <workItem from="1763968493234" duration="8563000" />
     </task>
     <servers />
   </component>
@@ -128,6 +130,6 @@
     <option name="version" value="3" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/tek_soru_borda_images$tek_soru_borda_images.coverage" NAME="tek_soru_borda_images Coverage Results" MODIFIED="1763979854279" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/tek_soru_borda_images$tek_soru_borda_images.coverage" NAME="tek_soru_borda_images Coverage Results" MODIFIED="1763982279823" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
   </component>
 </project>
