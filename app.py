@@ -144,7 +144,18 @@ def _check_static_images():
         fs = os.path.join(base, path.replace("/static/", ""))
         print(("OK   " if os.path.exists(fs) else "MISS "), fs)
 _check_static_images()
+# ===== SELF PING (Render'ın uyumamasını engelle) =====
+import threading, time, requests
 
+def stay_awake():
+    while True:
+        try:
+            requests.get("https://tek-soru-borda-images.onrender.com/", timeout=8)
+        except:
+            pass
+        time.sleep(600)  # 10 dakika
+
+threading.Thread(target=stay_awake, daemon=True).start()
 
 # ===== RUN =====
 if __name__ == "__main__":
