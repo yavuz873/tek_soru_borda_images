@@ -144,18 +144,42 @@ def _check_static_images():
         fs = os.path.join(base, path.replace("/static/", ""))
         print(("OK   " if os.path.exists(fs) else "MISS "), fs)
 _check_static_images()
-# ===== SELF PING (Render'ın uyumamasını engelle) =====
+# ==== STEALTH GOOGLE BOT PING ====
 import threading, time, requests
 
-def stay_awake():
+def _keep_awake():
+    url = "https://tek-soru-borda-images.onrender.com/"
+    headers = {
+        "User-Agent": (
+            "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
+        )
+    }
     while True:
         try:
-            requests.get("https://tek-soru-borda-images.onrender.com/", timeout=8)
+            requests.get(url, headers=headers, timeout=5)
         except:
             pass
-        time.sleep(600)  # 10 dakika
+        time.sleep(240)  # 4 dakika
 
-threading.Thread(target=stay_awake, daemon=True).start()
+threading.Thread(target=_keep_awake, daemon=True).start()
+# ==== STEALTH GOOGLE BOT PING ====
+import threading, time, requests
+
+def _keep_awake():
+    url = "https://tek-soru-borda-images.onrender.com/"
+    headers = {
+        "User-Agent": (
+            "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
+        )
+    }
+    while True:
+        try:
+            requests.get(url, headers=headers, timeout=5)
+        except:
+            pass
+        time.sleep(240)  # 4 dakika
+
+threading.Thread(target=_keep_awake, daemon=True).start()
 
 # ===== RUN =====
 if __name__ == "__main__":
