@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: "Inter", system-ui, sans-serif;
+        background: #f7f5f2;
+        color: #3A2320;
+        padding: 20px;
+    }
+
+    .container {
+        max-width: 900px;
+        margin: auto;
+        background: #fff;
+        padding: 24px 30px;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,.08);
+    }
+
+    h1 {
+        font-size: 28px;
+        text-align: center;
+        color: #3A2320;
+        margin-bottom: 24px;
+    }
+
+    label {
+        font-weight: 600;
+        display: block;
+        margin-top: 18px;
+    }
+
+    input, textarea {
+        width: 100%;
+        padding: 12px;
+        font-size: 15px;
+        margin-top: 6px;
+        border-radius: 10px;
+        border: 1px solid #c6bcb4;
+        outline: none;
+    }
+
+    input:focus, textarea:focus {
+        border-color: #5a422e;
+    }
+
+    .candidate-row {
+        display: flex;
+        gap: 10px;
+        margin-top: 8px;
+    }
+
+    .candidate-row input {
+        flex: 1;
+    }
+
+    .remove-btn {
+        background: #a33e3e;
+        border: none;
+        color: white;
+        padding: 6px 10px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: .2s;
+    }
+
+    .remove-btn:hover {
+        background:#7c1e1e;
+    }
+
+    .add-btn {
+        margin-top: 12px;
+        background: #5a422e;
+        border: none;
+        padding: 10px;
+        color:white;
+        border-radius: 10px;
+        font-size: 15px;
+        cursor:pointer;
+        transition:.2s;
+    }
+
+    .add-btn:hover {
+        background:#3d2c20;
+    }
+
+    .save-btn {
+        width: 100%;
+        margin-top: 22px;
+        font-size: 18px;
+        padding: 14px;
+        background:#3A2320;
+        color:white;
+        border:none;
+        border-radius:12px;
+        cursor:pointer;
+        font-weight:700;
+    }
+
+    .save-btn:hover {
+        background:#1f1410;
+    }
+
+    .danger {
+        margin-top: 18px;
+        background:#c73939;
+        color:white;
+        padding:12px;
+        width: 100%;
+        border:none;
+        border-radius:12px;
+        font-weight:700;
+        cursor:pointer;
+    }
+
+    .danger:hover {
+        background:#8a1010;
+    }
+</style>
+</head>
+
+<body>
+<div class="container">
+    <h1>🛠 Yönetici Paneli</h1>
+
+    <!-- 📝 Soru düzenleme -->
+    <label>Görünen Soru Metni:</label>
+    <textarea id="question" rows="2" placeholder="Soru metnini gir..."></textarea>
+
+    <!-- 👥 Aday düzenleme alanı -->
+    <h1 class="admin-title">Yönetim Paneli</h1>
+<p class="admin-text">Aday ekle, sil veya düzenle. Kaydettiğinde oylar sıfırlanır.</p>
+
+<div id="candidateList">
+    {% for c in candidates %}
+    <div class="candidate-row">
+        <input type="text" value="{{ c.name }}" placeholder="Aday İsmi">
+        <input type="text" value="{{ c.img }}" placeholder="Görsel URL (jpg)">
+        <button class="remove-btn" onclick="removeRow(this)">✕</button>
+    </div>
+    {% endfor %}
+</div>
+
+<button class="add-btn" onclick="addCandidate()">+ Aday Ekle</button>
+<button class="save-btn" onclick="saveChanges()">💾 Kaydet</button>
+<button class="reset-btn" onclick="resetVotes()">🗑 Oyları Sıfırla</button>
+
+<script>
+function addCandidate() {
+    const list = document.getElementById("candidateList");
+    const div = document.createElement("div");
+    div.className = "candidate-row";
+    div.innerHTML = `
+        <input type="text" placeholder="İsim">
+        <input type="text" placeholder="Görsel URL">
+        <button class="remove-btn" onclick="removeRow(this)">X</button>
+    `;
+    list.appendChild(div);
+}
+
+function removeRow(btn) {
+    btn.parentElement.remove();
+}
+
+function saveChanges() {
+    const rows = document.querySelectorAll(".candidate-row");
+    const candidates = [];
+    rows.forEach(r => {
+        const name = r.children[0].value.trim();
+        const img = r.children[1].value.trim();
+        if (name && img) candidates.push({name, img});
+    });
+
+    fetch("/admin-update", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({candidates})
+    }).then(r => r.json()).then(res => {
+        if(res.ok) alert("Kaydedildi ✓");
+        else alert(res.msg);
+    });
+}
+
+function resetVotes() {
+    if(confirm("Tüm oylar silinsin mi?")) {
+        window.location.href = "/reset?token=DEGIS_TIR";
+    }
+}
+</script>
+</div> <!-- sayfanın son içeriği -->
+
+<script>
+function resetVotes() {
+  if (confirm("Tüm oylar silinsin mi?")) {
+    fetch("/reset")
+      .then(() => alert("Oylar sıfırlandı!"))
+      .then(() => location.reload());
+  }
+}
+</script>
+
+</body>
+</html>

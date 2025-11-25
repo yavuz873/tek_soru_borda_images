@@ -124,7 +124,6 @@ def export_csv():
     mem = io.BytesIO(output.getvalue().encode("utf-8"))
     mem.seek(0)
     return send_file(mem, mimetype="text/csv", as_attachment=True, download_name="votes_export.csv")
-
 @app.route("/reset")
 def reset():
     token = request.args.get("token", "")
@@ -134,6 +133,57 @@ def reset():
     resp = make_response(redirect(url_for("results")))
     resp.delete_cookie(COOKIE_NAME)
     return resp
+
+
+# =====================
+#    ADMIN PANEL
+# =====================
+
+ADMIN_PASSWORD = "DEGIS_TIR"
+
+
+@app.route("/admin-login", methods=["GET", "POST"])
+def admin_login():
+    error = None
+    if request.method == "POST":
+        pwd = request.form.get("password", "")
+        if pwd == ADMIN_PASSWORD:
+            resp = make_response(redirect("/admin-panel"))
+            resp.set_cookie("admin", "1", max_age=3600)   # 1 saat admin
+            return resp
+        else:
+            error = "Hatalı şifre!"
+    return render_template("admin_login.html", error=error)
+
+
+@app.route("/admin-panel")
+def admin_panel():
+    if request.cookies.get("admin") != "1":
+        return redirect("/admin-login")
+
+    return render_template(
+        "admin_panel.html",
+        candidates=CANDIDATES,
+    )
+
+
+@app.route("/admin-update", methods=["POST"])
+def admin_update():
+    if request.cookies.get("admin") != "1":
+        return jsonify({"ok": False, "msg": "Yetkin yok"})
+
+    data = request.get_json()
+
+    new_question = data.get("question", "")
+    new_candidates = data.get("candidates", [])
+
+    global CANDIDATES, NAMES
+    CANDIDATES = new_candidates
+    NAMES = [c["name"] for c in CANDIDATES]
+
+    save_data({"votes": []})  # Aday değiştiyse oyları sil
+
+    return jsonify({"ok": True})
 
 
 # ===== GÖRSELLERİ KONTROL =====

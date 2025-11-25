@@ -105,7 +105,9 @@
   <p style="margin-top:12px;">
     <a class="btn" href="/">Oy Ver</a>
     <a class="btn" href="/export.csv">CSV İndir</a>
-    <a class="btn" href="/reset?token=DEGIS_TIR">Sıfırla (admin)</a>
+ {% if request.cookies.get('admin') == '1' %}
+<a class="btn" href="/reset?token=DEGIS_TIR">Sıfırla (admin)</a>
+{% endif %}
   </p>
   <p style="margin-top:12px;">
     <a class="btn" href="/undo">Geri Al</a>

@@ -324,4 +324,63 @@ body {
 .btn-reset:hover {
   background: #222;
 }
+/* ===== Admin Panel ===== */
+.admin-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #3A2320;
+  text-align: center;
+  margin-bottom: 6px;
+}
+
+.admin-text {
+  color: #7A6A63;
+  font-size: 15px;
+  text-align: center;
+  margin-bottom: 22px;
+}
+
+/* Aday düzenleme satırları */
+.candidate-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.candidate-row input {
+  flex: 1;
+  padding: 8px 10px;
+  border: 1px solid #CAB8AC;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.remove-btn {
+  background: #B84A3A;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+.remove-btn:hover { background: #9E3D30; }
+
+/* Ana butonlar */
+.add-btn, .save-btn, .reset-btn {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.add-btn { background: #8B6A4B; color: #fff; }
+.save-btn { background: #3A2320; color: #fff; }
+.reset-btn { background: #D24D3D; color: #fff; }
+
+.add-btn:hover { background: #78573F; }
+.save-btn:hover { background: #251611; }
+.reset-btn:hover { background: #B23C30; }
 
