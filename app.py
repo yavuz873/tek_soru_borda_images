@@ -139,7 +139,8 @@ def reset():
 #    ADMIN PANEL
 # =====================
 
-ADMIN_PASSWORD = "DEGIS_TIR"
+ADMIN_PASSWORD =  "Ornek2026"
+
 
 
 @app.route("/admin-login", methods=["GET", "POST"])
