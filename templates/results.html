@@ -23,8 +23,15 @@
     .left{text-align:left;}
   </style>
 </head>
+<script>
+function goAdmin() {
+  window.location.href = "/admin-login";
+}
+</script>
+
+
 <body>
-  <h1>Sonuçlar</h1>
+  <h1 onclick="goAdmin()" style="cursor:pointer;">Sonuçlar</h1>
   <p class="muted">Toplam oy: {{ total_votes }}</p>
   <div class="card">
     <h3>Özet</h3>

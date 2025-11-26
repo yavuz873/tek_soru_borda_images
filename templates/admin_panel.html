@@ -150,7 +150,7 @@
 
 <button class="add-btn" onclick="addCandidate()">+ Aday Ekle</button>
 <button class="save-btn" onclick="saveChanges()">💾 Kaydet</button>
-<button class="reset-btn" onclick="resetVotes()">🗑 Oyları Sıfırla</button>
+<button class="danger-reset" onclick="resetVotes()">🗑 Oyları Sıfırla</button>
 
 <script>
 function addCandidate() {
@@ -187,22 +187,12 @@ function saveChanges() {
         else alert(res.msg);
     });
 }
-
-function resetVotes() {
-    if(confirm("Tüm oylar silinsin mi?")) {
-        window.location.href = "/reset?token=DEGIS_TIR";
-    }
-}
 </script>
-</div> <!-- sayfanın son içeriği -->
 
 <script>
 function resetVotes() {
-  if (confirm("Tüm oylar silinsin mi?")) {
-    fetch("/reset")
-      .then(() => alert("Oylar sıfırlandı!"))
-      .then(() => location.reload());
-  }
+    if (!confirm("⚠ Tüm oylar sıfırlanacak! Emin misin?")) return;
+    fetch("/reset?token={{ ADMIN_RESET_TOKEN }}").then(() => location.reload());
 }
 </script>
 
