@@ -127,7 +127,7 @@
       <workItem from="1763836956235" duration="17621000" />
       <workItem from="1763918214451" duration="6181000" />
       <workItem from="1763968493234" duration="23274000" />
-      <workItem from="1764099914678" duration="13892000" />
+      <workItem from="1764099914678" duration="22378000" />
     </task>
     <servers />
   </component>
@@ -135,6 +135,6 @@
     <option name="version" value="3" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/tek_soru_borda_images$tek_soru_borda_images.coverage" NAME="tek_soru_borda_images Coverage Results" MODIFIED="1764188080363" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/tek_soru_borda_images$tek_soru_borda_images.coverage" NAME="tek_soru_borda_images Coverage Results" MODIFIED="1764234182121" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
   </component>
 </project>

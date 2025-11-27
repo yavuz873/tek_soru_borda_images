@@ -1,9 +1,13 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Panel</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <title>Admin Panel</title>
 
 <style>
     body {
@@ -149,8 +153,15 @@
 </div>
 
 <button class="add-btn" onclick="addCandidate()">+ Aday Ekle</button>
-<button class="save-btn" onclick="saveChanges()">💾 Kaydet</button>
-<button class="danger-reset" onclick="resetVotes()">🗑 Oyları Sıfırla</button>
+
+<div class="save-wrapper">
+    <button class="save-btn" onclick="saveChanges()">💾 Kaydet</button>
+</div>
+
+<div class="reset-wrapper">
+    <button class="danger-reset" onclick="resetVotes()">🗑 Oyları Sıfırla</button>
+</div>
+
 
 <script>
 function addCandidate() {
@@ -192,7 +203,9 @@ function saveChanges() {
 <script>
 function resetVotes() {
     if (!confirm("⚠ Tüm oylar sıfırlanacak! Emin misin?")) return;
-    fetch("/reset?token={{ ADMIN_RESET_TOKEN }}").then(() => location.reload());
+
+    fetch("/reset", { method: "GET" })
+        .then(() => location.reload());
 }
 </script>
 
