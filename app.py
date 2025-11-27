@@ -2,14 +2,18 @@ from flask import Flask, render_template, request, jsonify, redirect, url_for, m
 import json, os, io, csv
 from collections import defaultdict, Counter
 import uuid as _uuid
+from flask import session
 
 # ===== APP =====
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/static', static_folder='static')
+
 
 # ===== UUID CACHE KIRICI =====
 def uuid():
     return _uuid.uuid4()
 app.jinja_env.globals['uuid'] = uuid
+
+app.secret_key = "BunuDegistir_SuperGizliAnahtar!!"
 
 
 # ===== AYARLAR =====
@@ -149,9 +153,8 @@ def admin_login():
     if request.method == "POST":
         pwd = request.form.get("password", "")
         if pwd == ADMIN_PASSWORD:
-            resp = make_response(redirect("/admin-panel"))
-            resp.set_cookie("admin", "1", max_age=3600)   # 1 saat admin
-            return resp
+            session["admin"] = True
+            return redirect("/admin-panel")
         else:
             error = "Hatalı şifre!"
     return render_template("admin_login.html", error=error)
@@ -159,7 +162,7 @@ def admin_login():
 
 @app.route("/admin-panel")
 def admin_panel():
-    if request.cookies.get("admin") != "1":
+    if not session.get("admin"):
         return redirect("/admin-login")
 
     return render_template(
@@ -170,7 +173,7 @@ def admin_panel():
 
 @app.route("/admin-update", methods=["POST"])
 def admin_update():
-    if request.cookies.get("admin") != "1":
+    if not session.get("admin"):
         return jsonify({"ok": False, "msg": "Yetkin yok"})
 
     data = request.get_json()

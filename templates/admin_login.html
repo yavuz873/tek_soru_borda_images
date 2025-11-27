@@ -4,80 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin Girişi</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
 
-<style>
-    body {
-        margin: 0;
-        font-family: "Inter", system-ui, sans-serif;
-        background: #f7f5f2;
-        color: #3A2320;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-    }
 
-    .login-box {
-        background: #fff;
-        padding: 26px 32px;
-        border-radius: 16px;
-        width: 92%;
-        max-width: 380px;
-        box-shadow: 0 4px 12px rgba(0,0,0,.08);
-        text-align: center;
-    }
-
-    h1 {
-        font-size: 26px;
-        margin-bottom: 6px;
-        font-weight: 700;
-        color: #3A2320;
-    }
-
-    p {
-        font-size: 15px;
-        color: #7A6A63;
-        margin-bottom: 22px;
-    }
-
-    input[type=password] {
-        width: 100%;
-        padding: 12px;
-        font-size: 16px;
-        border-radius: 10px;
-        border: 1px solid #c6bcb4;
-        margin-bottom: 15px;
-        outline: none;
-    }
-
-    input[type=password]:focus {
-        border-color: #5a422e;
-    }
-
-    .login-btn {
-        width: 100%;
-        background: #5a422e;
-        color: white;
-        border: none;
-        padding: 12px;
-        font-size: 17px;
-        border-radius: 10px;
-        cursor: pointer;
-        font-weight: 600;
-        transition: .2s;
-    }
-
-    .login-btn:hover {
-        background: #3d2c20;
-    }
-
-    .error {
-        color: #b33939;
-        font-size: 14px;
-        margin-top: 8px;
-        font-weight: 500;
-    }
-</style>
 </head>
 
 <body>

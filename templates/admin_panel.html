@@ -4,130 +4,15 @@
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css', v=uuid()) }}">
+
+
 
     <title>Admin Panel</title>
 
-<style>
-    body {
-        margin: 0;
-        font-family: "Inter", system-ui, sans-serif;
-        background: #f7f5f2;
-        color: #3A2320;
-        padding: 20px;
-    }
 
-    .container {
-        max-width: 900px;
-        margin: auto;
-        background: #fff;
-        padding: 24px 30px;
-        border-radius: 16px;
-        box-shadow: 0 4px 12px rgba(0,0,0,.08);
-    }
-
-    h1 {
-        font-size: 28px;
-        text-align: center;
-        color: #3A2320;
-        margin-bottom: 24px;
-    }
-
-    label {
-        font-weight: 600;
-        display: block;
-        margin-top: 18px;
-    }
-
-    input, textarea {
-        width: 100%;
-        padding: 12px;
-        font-size: 15px;
-        margin-top: 6px;
-        border-radius: 10px;
-        border: 1px solid #c6bcb4;
-        outline: none;
-    }
-
-    input:focus, textarea:focus {
-        border-color: #5a422e;
-    }
-
-    .candidate-row {
-        display: flex;
-        gap: 10px;
-        margin-top: 8px;
-    }
-
-    .candidate-row input {
-        flex: 1;
-    }
-
-    .remove-btn {
-        background: #a33e3e;
-        border: none;
-        color: white;
-        padding: 6px 10px;
-        border-radius: 8px;
-        cursor: pointer;
-        font-size: 14px;
-        transition: .2s;
-    }
-
-    .remove-btn:hover {
-        background:#7c1e1e;
-    }
-
-    .add-btn {
-        margin-top: 12px;
-        background: #5a422e;
-        border: none;
-        padding: 10px;
-        color:white;
-        border-radius: 10px;
-        font-size: 15px;
-        cursor:pointer;
-        transition:.2s;
-    }
-
-    .add-btn:hover {
-        background:#3d2c20;
-    }
-
-    .save-btn {
-        width: 100%;
-        margin-top: 22px;
-        font-size: 18px;
-        padding: 14px;
-        background:#3A2320;
-        color:white;
-        border:none;
-        border-radius:12px;
-        cursor:pointer;
-        font-weight:700;
-    }
-
-    .save-btn:hover {
-        background:#1f1410;
-    }
-
-    .danger {
-        margin-top: 18px;
-        background:#c73939;
-        color:white;
-        padding:12px;
-        width: 100%;
-        border:none;
-        border-radius:12px;
-        font-weight:700;
-        cursor:pointer;
-    }
-
-    .danger:hover {
-        background:#8a1010;
-    }
-</style>
 </head>
 
 <body>
